@@ -15,11 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sudoku-app-game/sudoku-models": [
-        "libs/sudoku-shared/sudoku-models/src/index.ts"
-      ],
       "@sudoku-app-game/game-api": [
         "libs/sudoku-web/data-access/game-api/src/index.ts"
+      ],
+      "@sudoku-app-game/sudoku-models": [
+        "libs/sudoku-shared/sudoku-models/src/index.ts"
       ]
     }
   },
