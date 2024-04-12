@@ -1,5 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GameApiSudoku } from '@sudoku-app-game/game-api';
 
 @Component({
   selector: 'app-nx-welcome',
@@ -904,4 +905,16 @@ nx affected:e2e</pre>
   styles: [],
   encapsulation: ViewEncapsulation.None,
 })
-export class NxWelcomeComponent {}
+export class NxWelcomeComponent {
+  constructor(private readonly apiSudokuGame: GameApiSudoku) { }
+
+  ngOnInit(): void {
+    this.apiSudokuGame.getBoard("medium").subscribe((board: any) => {
+      this.apiSudokuGame.solveBoard(board).subscribe((board: any) => {
+        console.log(board);
+      })
+    });
+
+    return;
+  }
+}
