@@ -1,0 +1,10 @@
+{
+  "name": "sudoku-app-game-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/sudoku-app-game-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["sudoku-app-game"],
+  "// targets": "to see all targets run: nx show project sudoku-app-game-e2e --web",
+  "targets": {}
+}

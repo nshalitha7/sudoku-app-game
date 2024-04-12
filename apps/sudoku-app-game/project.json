@@ -1,0 +1,144 @@
+{
+  "name": "sudoku-app-game",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/sudoku-app-game/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/sudoku-app-game/browser",
+        "index": "apps/sudoku-app-game/src/index.html",
+        "main": "apps/sudoku-app-game/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/sudoku-app-game/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/sudoku-app-game/src/favicon.ico",
+          "apps/sudoku-app-game/src/assets"
+        ],
+        "styles": ["apps/sudoku-app-game/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "sudoku-app-game:build:production"
+        },
+        "development": {
+          "buildTarget": "sudoku-app-game:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "sudoku-app-game:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/sudoku-app-game/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "sudoku-app-game:build",
+        "port": 4200,
+        "spa": true
+      }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/sudoku-app-game/server",
+        "main": "apps/sudoku-app-game/server.ts",
+        "tsConfig": "apps/sudoku-app-game/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "sudoku-app-game:build:development",
+          "serverTarget": "sudoku-app-game:server:development"
+        },
+        "production": {
+          "browserTarget": "sudoku-app-game:build:production",
+          "serverTarget": "sudoku-app-game:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@angular-devkit/build-angular:prerender",
+      "options": {
+        "routes": ["/"]
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "sudoku-app-game:build:development",
+          "serverTarget": "sudoku-app-game:server:development"
+        },
+        "production": {
+          "browserTarget": "sudoku-app-game:build:production",
+          "serverTarget": "sudoku-app-game:server:production"
+        }
+      },
+      "defaultConfiguration": "production"
+    }
+  }
+}
