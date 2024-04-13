@@ -6,12 +6,12 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SudokuLogic {
-  private board: number[][];
+  private _board: number[][];
   private status: GameStatus;
   private difficulty: GameDifficulty;
 
   constructor(private readonly apiSudoku: GameApiSudoku) {
-    this.board = this.initializeBoard();
+    this._board = this.initializeBoard();
     this.status = 'unsolved';
     this.difficulty = 'random';
   }
@@ -41,29 +41,33 @@ export class SudokuLogic {
       throw new Error('Value must be between 0 and 9');
     }
 
-    this.board[x][y] = value;
+    this._board[x][y] = value;
   }
 
   async setNewBoard(difficulty: GameDifficulty) {
     const { board } = await firstValueFrom(this.apiSudoku.getBoard(difficulty));
-    this.board = board;
+    this._board = board;
     this.difficulty = difficulty;
     this.status = 'unsolved';
   }
 
   async solveBoard() {
     const { solution, status, difficulty } = await firstValueFrom(
-      this.apiSudoku.solveBoard({ board: this.board })
+      this.apiSudoku.solveBoard({ board: this._board })
     );
-    this.board = solution;
+    this._board = solution;
     this.difficulty = difficulty;
     this.status = status;
   }
 
   async validateBoard() {
     const { status } = await firstValueFrom(
-      this.apiSudoku.validateBoard({ board: this.board })
+      this.apiSudoku.validateBoard({ board: this._board })
     );
     this.status = status;
+  }
+
+  get board(): number[][] {
+    return this._board;
   }
 }

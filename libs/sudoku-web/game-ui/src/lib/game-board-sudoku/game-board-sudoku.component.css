@@ -1,0 +1,85 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ensure center alignment on all screens */
+}
+
+.title {
+  padding: 1rem;
+  text-align: center; /* Ensures the title is centered */
+}
+
+.board-line {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.square {
+  max-height: 3.5rem;
+  max-width: 3.5rem;
+  min-height: 2.5rem; /* Slightly larger min-height for touch targets on mobile */
+  min-width: 2.5rem; /* Slightly larger min-width for touch targets on mobile */
+  flex: 1 1 0;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.border-sm {
+  border: 1px solid rgba(110, 104, 104, 0.93);
+}
+
+.row0 {
+  border-left: 5px solid #000000;
+}
+.col0 {
+  border-top: 5px solid #000000;
+}
+.col8 {
+  border-bottom: 5px solid #000000;
+}
+.row8 {
+  border-right: 5px solid #000000;
+}
+
+.row2,
+.row5 {
+  border-right: 4px solid #000000;
+}
+.col2,
+.col5 {
+  border-bottom: 4px solid #000000;
+}
+
+.selected {
+  background-color: #d7cf7a;
+}
+
+/* Media Queries for Responsive Adjustments */
+@media (max-width: 600px) {
+  .square {
+    max-height: 2.5rem;
+    max-width: 2.5rem;
+    min-height: 2rem;
+    min-width: 2rem;
+  }
+
+  .title {
+    font-size: 1.2rem; /* Slightly smaller font size for smaller screens */
+  }
+}
+
+@media (max-width: 400px) {
+  .square {
+    max-height: 2rem;
+    max-width: 2rem;
+    min-height: 1.5rem;
+    min-width: 1.5rem;
+  }
+
+  .title {
+    font-size: 1rem; /* Even smaller font size for very small screens */
+  }
+}

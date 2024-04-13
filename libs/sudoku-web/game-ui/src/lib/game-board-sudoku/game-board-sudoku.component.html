@@ -1,0 +1,20 @@
+<div class="board">
+  <h1 class="title">Sudoku Game</h1>
+  <div class="main-board" (click)="onClickBoard($event)" role="grid">
+    <div
+      class="board-line"
+      *ngFor="let col of board; let cIndex = index"
+      role="row"
+    >
+      <div
+        class="square border-sm"
+        *ngFor="let row of col; let rIndex = index"
+        [ngClass]="['col' + cIndex, 'row' + rIndex]"
+        role="gridcell"
+        [attr.aria-label]="'Row ' + (rIndex + 1) + ', Column ' + (cIndex + 1)"
+      >
+        <span *ngIf="row !== 0">{{ row }}</span>
+      </div>
+    </div>
+  </div>
+</div>

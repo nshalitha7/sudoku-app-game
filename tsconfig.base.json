@@ -18,6 +18,9 @@
       "@sudoku-app-game/game-api": [
         "libs/sudoku-web/data-access/game-api/src/index.ts"
       ],
+      "@sudoku-app-game/game-board-sudoku": [
+        "libs/sudoku-web/game-ui/src/index.ts"
+      ],
       "@sudoku-app-game/sudoku-logic": [
         "libs/sudoku-web/sudoku-logic/src/index.ts"
       ],
