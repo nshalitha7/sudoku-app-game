@@ -110,11 +110,11 @@
 }
 
 .by-solver-solved {
-  color: rgb(121, 251, 89);
+  color: #1a8d8d;
 }
 
 .by-solver-unsolvable {
-  color: rgb(251, 89, 89);
+  color: #dc3545;
 }
 
 .login {
