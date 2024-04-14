@@ -1,19 +1,73 @@
 <div class="board">
-  <h1 class="title">Sudoku Game</h1>
   <div class="main-board" (click)="onClickBoard($event)" role="grid">
-    <div
-      class="board-line"
-      *ngFor="let col of board; let cIndex = index"
-      role="row"
-    >
-      <div
-        class="square border-sm"
-        *ngFor="let row of col; let rIndex = index"
-        [ngClass]="['col' + cIndex, 'row' + rIndex]"
-        role="gridcell"
-        [attr.aria-label]="'Row ' + (rIndex + 1) + ', Column ' + (cIndex + 1)"
-      >
-        <span *ngIf="row !== 0">{{ row }}</span>
+    <div class="board-line top">
+      <h1 class="title">Sudoku Game</h1>
+      <div>
+        <div class="sub-title">-Select Difficulty to Generate Board-</div>
+        <br />
+        <div class="btn-group">
+          <lib-sudoku-button (click)="onClickGenerate('easy')">
+            Easy
+          </lib-sudoku-button>
+          <lib-sudoku-button (click)="onClickGenerate('medium')">
+            Medium
+          </lib-sudoku-button>
+          <lib-sudoku-button (click)="onClickGenerate('hard')">
+            Hard
+          </lib-sudoku-button>
+          <lib-sudoku-button (click)="onClickGenerate('random')">
+            Random
+          </lib-sudoku-button>
+        </div>
+      </div>
+      <div class="game-status">
+        <div>
+          Game Status:
+          <lib-sudoku-badge
+            [color]="
+              status === 'unsolved'
+                ? 'default'
+                : status === 'broken'
+                ? 'danger'
+                : 'success'
+            "
+          >
+            {{ status }}
+          </lib-sudoku-badge>
+        </div>
+        <div>
+          Difficulty:
+          <lib-sudoku-badge>
+            {{ difficulty }}
+          </lib-sudoku-badge>
+        </div>
+      </div>
+    </div>
+    <div class="board-cells">
+      @for (col of board; track colIdx; let colIdx = $index) {
+      <div class="board-line">
+        @for (row of col; track rowIdx; let rowIdx = $index) {
+        <div
+          class="border-sm square"
+          [ngClass]="['col' + colIdx, 'row' + rowIdx]"
+          [class.by-user]="!row.hasDefaultValue"
+        >
+          @if (row.value !== 0) {
+          {{ row.value }}
+          }
+        </div>
+        }
+      </div>
+      }
+    </div>
+    <div class="bottom">
+      <div class="btn-group">
+        <lib-sudoku-button class="button" (click)="onClickValidate()">
+          Validate
+        </lib-sudoku-button>
+        <lib-sudoku-button class="button" (click)="onCickSolve()">
+          Solve
+        </lib-sudoku-button>
       </div>
     </div>
   </div>

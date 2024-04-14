@@ -1,19 +1,24 @@
 import { GameApiSudoku } from '@sudoku-app-game/game-api';
 import { GameDifficulty, GameStatus } from '@sudoku-app-game/sudoku-models';
-
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SudokuLogic {
-  private _board: number[][];
+  board$: BehaviorSubject<number[][]>;
+  status$: BehaviorSubject<GameStatus>;
+  difficulty$: BehaviorSubject<GameDifficulty>;
+  private board: number[][];
   private status: GameStatus;
   private difficulty: GameDifficulty;
 
   constructor(private readonly apiSudoku: GameApiSudoku) {
-    this._board = this.initializeBoard();
+    this.board = this.initializeBoard();
+    this.board$ = new BehaviorSubject(this.board);
     this.status = 'unsolved';
+    this.status$ = new BehaviorSubject<GameStatus>(this.status);
     this.difficulty = 'random';
+    this.difficulty$ = new BehaviorSubject<GameDifficulty>(this.difficulty);
   }
 
   initializeBoard(): number[][] {
@@ -41,33 +46,38 @@ export class SudokuLogic {
       throw new Error('Value must be between 0 and 9');
     }
 
-    this._board[x][y] = value;
+    this.board[x][y] = value;
   }
 
   async setNewBoard(difficulty: GameDifficulty) {
     const { board } = await firstValueFrom(this.apiSudoku.getBoard(difficulty));
-    this._board = board;
+    this.board = board;
+    this.board$.next(board);
     this.difficulty = difficulty;
+    this.difficulty$.next(this.difficulty);
     this.status = 'unsolved';
+    this.status$.next(this.status);
   }
 
   async solveBoard() {
     const { solution, status, difficulty } = await firstValueFrom(
-      this.apiSudoku.solveBoard({ board: this._board })
+      this.apiSudoku.solveBoard({ board: this.board })
     );
-    this._board = solution;
+    this.board = solution;
+    this.board$.next(this.board);
     this.difficulty = difficulty;
+    this.difficulty$.next(this.difficulty);
     this.status = status;
+    this.status$.next(this.status);
   }
 
   async validateBoard() {
     const { status } = await firstValueFrom(
-      this.apiSudoku.validateBoard({ board: this._board })
+      this.apiSudoku.validateBoard({ board: this.board })
     );
     this.status = status;
-  }
-
-  get board(): number[][] {
-    return this._board;
+    console.log(this.board);
+    console.log('VALIDATING..', status);
+    this.status$.next(this.status);
   }
 }

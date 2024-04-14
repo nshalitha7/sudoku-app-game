@@ -1,19 +1,45 @@
 .badge {
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
+  font-size: 1.2rem;
 }
 
 .default {
-  background-color: #6c757d;
-  color: white;
+  background-color: #a6a6a6; /* Lighter grey for a softer look */
+  color: black; /* Black text for contrast against lighter background */
 }
 
 .success {
-  background-color: rgb(32, 206, 44);
-  color: white;
+  background-color: #28a745; /* Updated green, softer shade */
+  color: #fff; /* Ensured text color is white for readability */
 }
 
 .danger {
-  background-color: rgb(243, 74, 74);
-  color: white;
+  background-color: #dc3545; /* A deeper red for more visual alert */
+  color: #fff; /* Kept text color white for clear visibility */
+}
+
+/* Media Queries for Responsive Adjustments */
+@media (max-width: 600px) {
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.6rem;
+  }
 }
