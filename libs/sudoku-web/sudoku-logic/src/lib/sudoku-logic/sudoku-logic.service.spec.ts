@@ -80,14 +80,17 @@ describe('SudokuLogic', () => {
     expect(board.length).toBe(9);
     board.forEach((row) => {
       expect(row.length).toBe(9);
-      row.forEach((cell) => expect(cell).toBe(0));
+      row.forEach((cell) => expect(cell.value).toBe(0));
     });
   });
 
   it('should fetch a new board and set it with correct difficulty', async () => {
     await service.setNewBoard('easy');
     expect(apiSudokuMock.getBoard).toHaveBeenCalledWith('easy');
-    expect(service['board']).toEqual([
+    const sudokuBoard = service['board'].map((row) =>
+      row.map((cell) => cell.value)
+    );
+    expect(sudokuBoard).toEqual([
       [0, 0, 0, 0, 1, 0, 0, 0, 8],
       [0, 0, 0, 0, 0, 0, 5, 0, 0],
       [0, 0, 0, 0, 0, 9, 1, 0, 0],
@@ -106,7 +109,10 @@ describe('SudokuLogic', () => {
     await service.setNewBoard('medium');
     expect(apiSudokuMock.getBoard).toHaveBeenCalledWith('medium');
     await service.solveBoard();
-    expect(service['board']).toEqual([
+    const sudokuBoard = service['board'].map((row) =>
+      row.map((cell) => cell.value)
+    );
+    expect(sudokuBoard).toEqual([
       [2, 7, 9, 5, 1, 3, 4, 6, 8],
       [4, 6, 1, 2, 7, 8, 5, 3, 9],
       [5, 3, 8, 4, 6, 9, 1, 2, 7],
@@ -123,8 +129,11 @@ describe('SudokuLogic', () => {
 
   it('should validate the board using the API and update the status', async () => {
     await service.validateBoard();
+    const sudokuBoard = service['board'].map((row) =>
+      row.map((cell) => cell.value)
+    );
     expect(apiSudokuMock.validateBoard).toHaveBeenCalledWith({
-      board: service['board'],
+      board: sudokuBoard,
     });
     expect(service['status']).toBe('solved');
   });
