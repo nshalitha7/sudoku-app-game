@@ -63,7 +63,7 @@ describe('SudokuLogic', () => {
           [1, 2, 3, 7, 5, 4, 9, 8, 6],
           [6, 4, 7, 9, 8, 1, 3, 5, 2],
           [8, 9, 5, 3, 2, 6, 7, 1, 4],
-        ], // Example solution (not a real solution)
+        ],
         status: 'solved',
         difficulty: 'medium',
       })
