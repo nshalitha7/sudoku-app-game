@@ -110,8 +110,9 @@ export class GameBoardSudokuComponent {
       !this.selectedCell ||
       this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].type ===
         CellType.FIXED ||
-      this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].type ===
-        CellType.GENERATED
+      (this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].type ===
+        CellType.GENERATED &&
+        this.status === 'solved')
     )
       return;
     if (this.possibleKey.includes(key)) {

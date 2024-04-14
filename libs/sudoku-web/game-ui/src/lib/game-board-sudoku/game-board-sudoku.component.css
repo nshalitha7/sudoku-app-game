@@ -109,8 +109,12 @@
   font-size: 1.2rem;
 }
 
-.by-solver {
+.by-solver-solved {
   color: rgb(121, 251, 89);
+}
+
+.by-solver-unsolvable {
+  color: rgb(251, 89, 89);
 }
 
 .login {

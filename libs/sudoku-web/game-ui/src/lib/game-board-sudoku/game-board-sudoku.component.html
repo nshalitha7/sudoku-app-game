@@ -53,7 +53,12 @@
           [ngClass]="['col' + colIdx, 'row' + rowIdx]"
           role="gridcell"
           [class.by-user]="row.type === CellType.INPUT"
-          [class.by-solver]="row.type === CellType.GENERATED"
+          [class.by-solver-solved]="
+            row.type === CellType.GENERATED && status === 'solved'
+          "
+          [class.by-solver-unsolvable]="
+            row.type === CellType.GENERATED && status === 'unsolved'
+          "
           [attr.aria-label]="'Row ' + (rowIdx + 1) + ', Column ' + (colIdx + 1)"
         >
           <!--          <span *ngIf="row.value !== 0">{{ row.value }}</span>-->

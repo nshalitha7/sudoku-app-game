@@ -2,16 +2,19 @@ import { Server } from 'socket.io';
 import express from 'express';
 import * as path from 'path';
 import {
-  SudokuCell,
   UpdateBoardStatus,
   UpdateBoardMessage,
+  BoardInformation,
+  BoardInformationSchema,
+  UpdateBoardMessageSchema,
+  UpdateBoardStatusSchema,
 } from '@sudoku-app-game/sudoku-models';
 
 const app = express();
 
 export type GameRoom = {
   gameId: string;
-  board: SudokuCell[][];
+  board: BoardInformation;
 };
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -43,7 +46,8 @@ io.on('connection', async (socket) => {
   const gameId: string = (socket.request as any)._query['gameId'];
   await socket.join(gameId);
 
-  socket.on('init-board', (board: SudokuCell[][]) => {
+  socket.on('init-board', (board: BoardInformation) => {
+    if (!BoardInformationSchema.safeParse(board).success) return;
     if (rooms[gameId] == null) {
       rooms[gameId] = {
         gameId,
@@ -53,21 +57,24 @@ io.on('connection', async (socket) => {
     io.to(gameId).emit('init-board', rooms[gameId].board);
   });
 
-  socket.on('new-board', (board: SudokuCell[][]) => {
-    if (!rooms[gameId]) {
-      rooms[gameId] = {
-        gameId,
-        board,
-      };
-    }
+  socket.on('new-board', (board: BoardInformation) => {
+    if (!BoardInformationSchema.safeParse(board).success) return;
+    rooms[gameId] = {
+      gameId,
+      board,
+    };
     io.to(gameId).emit('new-board', board);
   });
 
   socket.on('update-board', (msg: UpdateBoardMessage) => {
+    if (!UpdateBoardMessageSchema.safeParse(msg).success) return;
+    if (!rooms[gameId]) return;
+    rooms[gameId].board.board[msg.x][msg.y].value = msg.value;
     io.to(gameId).emit('update-board', msg);
   });
 
   socket.on('update-status', (msg: UpdateBoardStatus) => {
+    if (!UpdateBoardStatusSchema.safeParse(msg).success) return;
     io.to(gameId).emit('update-status', msg);
   });
 });

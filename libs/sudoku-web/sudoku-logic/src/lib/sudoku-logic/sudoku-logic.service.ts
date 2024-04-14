@@ -114,9 +114,7 @@ export class SudokuLogic {
   async solveBoard() {
     const { solution, status, difficulty } = await firstValueFrom(
       this.apiSudoku.solveBoard({
-        board: this.board.map((col) =>
-          col.map((value) => (value.type === CellType.FIXED ? value.value : 0))
-        ),
+        board: this.board.map((col) => col.map((value) => value.value)),
       })
     );
     this.board = solution.map((col, colIdx) =>
