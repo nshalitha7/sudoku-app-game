@@ -1,9 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { SudokuLogic } from '@sudoku-app-game/sudoku-logic';
-import { GameStatus, GameDifficulty } from '@sudoku-app-game/sudoku-models';
+import {
+  GameStatus,
+  GameDifficulty,
+  CellType,
+  SudokuCell,
+} from '@sudoku-app-game/sudoku-models';
 import { BadgeComponent } from '../theme-badge/sudoku-badge.component';
 import { ButtonComponent } from '../button/button.component';
+import { FormsModule } from '@angular/forms';
 
 type SelectedCell = {
   colIdx: number;
@@ -11,33 +17,27 @@ type SelectedCell = {
   element: HTMLElement;
 };
 
-type BoardCell = {
-  value: number;
-  hasDefaultValue: boolean;
-};
-
 @Component({
   selector: 'lib-game-board-sudoku',
   standalone: true,
-  imports: [CommonModule, BadgeComponent, ButtonComponent],
+  imports: [CommonModule, BadgeComponent, ButtonComponent, FormsModule],
   templateUrl: './game-board-sudoku.component.html',
   styleUrl: './game-board-sudoku.component.css',
 })
 export class GameBoardSudokuComponent {
-  board: BoardCell[][] = [];
+  CellType = CellType;
+
+  board: SudokuCell[][] = [];
   selectedCell: SelectedCell | null;
   status: GameStatus;
   difficulty: GameDifficulty;
   isLoading: boolean;
+  gameId: string;
   possibleKey = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
   constructor(private sudokuLogic: SudokuLogic) {
     this.sudokuLogic.board$.subscribe((board) => {
-      this.board = board.map((col) =>
-        col.map(
-          (row): BoardCell => ({ value: row, hasDefaultValue: row !== 0 })
-        )
-      );
+      this.board = board;
     });
     this.sudokuLogic.difficulty$.subscribe(
       (difficulty) => (this.difficulty = difficulty)
@@ -48,6 +48,7 @@ export class GameBoardSudokuComponent {
     this.status = 'unsolved';
     this.difficulty = 'random';
     this.isLoading = false;
+    this.gameId = '';
   }
 
   async onClickGenerate(difficulty: GameDifficulty) {
@@ -69,7 +70,6 @@ export class GameBoardSudokuComponent {
   }
 
   onClickBoard($event: Event) {
-    console.log('Clicked');
     const srcElement = $event.target as HTMLElement;
     if (!srcElement) return;
     if (!srcElement.classList.contains('square')) return;
@@ -106,8 +106,10 @@ export class GameBoardSudokuComponent {
     if (this.isLoading) return;
     if (
       !this.selectedCell ||
-      this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx]
-        .hasDefaultValue
+      this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].type ===
+        CellType.FIXED ||
+      this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].type ===
+        CellType.GENERATED
     )
       return;
     if (this.possibleKey.includes(key)) {
@@ -135,5 +137,9 @@ export class GameBoardSudokuComponent {
       this.selectedCell.element.classList.remove('selected');
       this.selectedCell = null;
     }
+  }
+
+  onClickLogin() {
+    this.sudokuLogic.initMultiplayer(this.gameId);
   }
 }

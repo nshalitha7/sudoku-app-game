@@ -52,7 +52,8 @@
           *ngFor="let row of col; let rowIdx = index"
           [ngClass]="['col' + colIdx, 'row' + rowIdx]"
           role="gridcell"
-          [class.by-user]="!row.hasDefaultValue"
+          [class.by-user]="row.type === CellType.INPUT"
+          [class.by-solver]="row.type === CellType.GENERATED"
           [attr.aria-label]="'Row ' + (rowIdx + 1) + ', Column ' + (colIdx + 1)"
         >
           <!--          <span *ngIf="row.value !== 0">{{ row.value }}</span>-->
@@ -80,20 +81,20 @@
         </div>
       </div>
       <div class="btn-group">
-        <lib-sudoku-button
-          class="button"
-          (click)="onClickValidate()"
-          [disabled]="isLoading"
-        >
+        <lib-sudoku-button (click)="onClickValidate()" [disabled]="isLoading">
           Validate
         </lib-sudoku-button>
-        <lib-sudoku-button
-          class="button"
-          (click)="onClickSolve()"
-          [disabled]="isLoading"
-        >
+        <lib-sudoku-button (click)="onClickSolve()" [disabled]="isLoading">
           Solve
         </lib-sudoku-button>
+      </div>
+    </div>
+
+    <div class="login">
+      <label>Multiplayer Mode</label>
+      <input class="input" [(ngModel)]="gameId" placeholder="gameId" />
+      <div>
+        <lib-sudoku-button (click)="onClickLogin()">Connect</lib-sudoku-button>
       </div>
     </div>
   </div>

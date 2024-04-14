@@ -124,7 +124,7 @@ export class SudokuLogic {
     this.status$.next(this.status);
   }
 
-  initMultiplayer(roomId: string) {
-    this.sudokuMultiplayer.init(roomId, this.board);
+  initMultiplayer(gameId: string) {
+    this.sudokuMultiplayer.init(gameId, this.board);
   }
 }

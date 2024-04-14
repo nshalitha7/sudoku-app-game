@@ -109,6 +109,24 @@
   font-size: 1.2rem;
 }
 
+.by-solver {
+  color: rgb(121, 251, 89);
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 4rem;
+}
+
+.input {
+  padding: 1rem 0.5rem;
+  border: #adadad 1px solid;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
 /* Media Queries for Responsive Adjustments */
 @media (max-width: 600px) {
   .square {

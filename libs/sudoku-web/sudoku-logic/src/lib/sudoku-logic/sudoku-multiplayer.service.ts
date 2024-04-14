@@ -19,8 +19,8 @@ export class SudokuMultiplayer {
     return;
   }
 
-  public init(roomId: string, board: SudokuCell[][]) {
-    this.socket = io('http://localhost:3333', { query: { roomId } });
+  public init(gameId: string, board: SudokuCell[][]) {
+    this.socket = io('http://localhost:3333', { query: { gameId } });
     this.socket.on('connect', () => {
       this.emitBoardInit(board);
     });
