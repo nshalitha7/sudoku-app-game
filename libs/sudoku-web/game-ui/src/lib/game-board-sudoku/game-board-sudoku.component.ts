@@ -28,6 +28,7 @@ export class GameBoardSudokuComponent {
   selectedCell: SelectedCell | null;
   status: GameStatus;
   difficulty: GameDifficulty;
+  isLoading: boolean;
   possibleKey = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
   constructor(private sudokuLogic: SudokuLogic) {
@@ -46,19 +47,25 @@ export class GameBoardSudokuComponent {
     this.sudokuLogic.setNewBoard('easy');
     this.status = 'unsolved';
     this.difficulty = 'random';
+    this.isLoading = false;
   }
 
-  onClickGenerate(difficulty: GameDifficulty) {
-    this.sudokuLogic.setNewBoard(difficulty);
+  async onClickGenerate(difficulty: GameDifficulty) {
+    this.isLoading = true;
+    await this.sudokuLogic.setNewBoard(difficulty);
+    this.isLoading = false;
   }
 
-  onClickValidate() {
-    console.log('OnClickValide');
-    if (this.status !== 'unsolvable') this.sudokuLogic.validateBoard();
+  async onClickValidate() {
+    this.isLoading = true;
+    await this.sudokuLogic.validateBoard();
+    this.isLoading = false;
   }
 
-  onClickSolve() {
-    this.sudokuLogic.solveBoard();
+  async onClickSolve() {
+    this.isLoading = true;
+    await this.sudokuLogic.solveBoard();
+    this.isLoading = false;
   }
 
   onClickBoard($event: Event) {
@@ -96,6 +103,7 @@ export class GameBoardSudokuComponent {
   }
 
   setNewValueToSelectedCell(key: string) {
+    if (this.isLoading) return;
     if (
       !this.selectedCell ||
       this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx]

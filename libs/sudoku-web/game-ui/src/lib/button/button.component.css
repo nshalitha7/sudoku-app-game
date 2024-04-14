@@ -19,7 +19,11 @@
   align-items: center;
 }
 
-.button:hover {
+.button:disabled {
+  background-color: #555a60;
+}
+
+.button:hover:enabled {
   cursor: pointer;
   background-color: #3fb0ac;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);

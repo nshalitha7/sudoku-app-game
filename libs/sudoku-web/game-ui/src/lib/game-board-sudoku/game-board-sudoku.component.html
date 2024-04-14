@@ -6,16 +6,28 @@
         <div class="sub-title">-Select Difficulty to Generate Board-</div>
         <br />
         <div class="btn-group">
-          <lib-sudoku-button (click)="onClickGenerate('easy')">
+          <lib-sudoku-button
+            (click)="onClickGenerate('easy')"
+            [disabled]="isLoading"
+          >
             Easy
           </lib-sudoku-button>
-          <lib-sudoku-button (click)="onClickGenerate('medium')">
+          <lib-sudoku-button
+            (click)="onClickGenerate('medium')"
+            [disabled]="isLoading"
+          >
             Medium
           </lib-sudoku-button>
-          <lib-sudoku-button (click)="onClickGenerate('hard')">
+          <lib-sudoku-button
+            (click)="onClickGenerate('hard')"
+            [disabled]="isLoading"
+          >
             Hard
           </lib-sudoku-button>
-          <lib-sudoku-button (click)="onClickGenerate('random')">
+          <lib-sudoku-button
+            (click)="onClickGenerate('random')"
+            [disabled]="isLoading"
+          >
             Random
           </lib-sudoku-button>
         </div>
@@ -68,10 +80,18 @@
         </div>
       </div>
       <div class="btn-group">
-        <lib-sudoku-button class="button" (click)="onClickValidate()">
+        <lib-sudoku-button
+          class="button"
+          (click)="onClickValidate()"
+          [disabled]="isLoading"
+        >
           Validate
         </lib-sudoku-button>
-        <lib-sudoku-button class="button" (click)="onClickSolve()">
+        <lib-sudoku-button
+          class="button"
+          (click)="onClickSolve()"
+          [disabled]="isLoading"
+        >
           Solve
         </lib-sudoku-button>
       </div>
