@@ -4,6 +4,8 @@ import {
   GameStatus,
   SudokuCell,
   CellType,
+  UpdateBoardMessage,
+  BoardInformation,
 } from '@sudoku-app-game/sudoku-models';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -29,13 +31,30 @@ export class SudokuLogic {
     this.difficulty = 'random';
     this.difficulty$ = new BehaviorSubject<GameDifficulty>(this.difficulty);
 
-    this.sudokuMultiplayer.initBoard$.subscribe(
-      (boardCoop: SudokuCell[][] | null) => {
-        if (!boardCoop) return;
-        this.board = boardCoop;
+    this.sudokuMultiplayer.multiplayerBoard$.subscribe(
+      (boardMultiplayer: BoardInformation | null) => {
+        if (!boardMultiplayer) return;
+        this.board = boardMultiplayer.board;
         this.board$.next(this.board);
+        this.status = boardMultiplayer.status;
+        this.status$.next(boardMultiplayer.status);
+        this.difficulty = boardMultiplayer.difficulty;
+        this.difficulty$.next(this.difficulty);
       }
     );
+
+    this.sudokuMultiplayer.newValue$.subscribe(
+      (newValue: UpdateBoardMessage | null) => {
+        if (!newValue) return;
+        this.setValue(newValue.x, newValue.y, newValue.value, false);
+      }
+    );
+
+    this.sudokuMultiplayer.newStatus$.subscribe((newStatus) => {
+      if (!newStatus) return;
+      this.status = newStatus.status;
+      this.status$.next(this.status);
+    });
   }
 
   initializeBoard(): SudokuCell[][] {
@@ -53,7 +72,7 @@ export class SudokuLogic {
     return board;
   }
 
-  setValue(x: number, y: number, value: number) {
+  setValue(x: number, y: number, value: number, shouldEmit = true) {
     if (x < 0 || x > 9) {
       throw new Error('X must be between 0 and 9');
     }
@@ -66,8 +85,8 @@ export class SudokuLogic {
       throw new Error('Value must be between 0 and 9');
     }
 
-    this.sudokuMultiplayer.emitUpdateBoard({ x, y, value });
     this.board[x][y] = { value, type: CellType.INPUT };
+    if (shouldEmit) this.sudokuMultiplayer.emitUpdateBoard({ x, y, value });
   }
 
   async setNewBoard(difficulty: GameDifficulty) {
@@ -85,6 +104,11 @@ export class SudokuLogic {
     this.difficulty$.next(this.difficulty);
     this.status = 'unsolved';
     this.status$.next(this.status);
+    this.sudokuMultiplayer.emitNewBoard({
+      board: this.board,
+      status: this.status,
+      difficulty: this.difficulty,
+    });
   }
 
   async solveBoard() {
@@ -112,6 +136,11 @@ export class SudokuLogic {
     this.difficulty$.next(this.difficulty);
     this.status = status;
     this.status$.next(this.status);
+    this.sudokuMultiplayer.emitNewBoard({
+      board: this.board,
+      difficulty: this.difficulty,
+      status: this.status,
+    });
   }
 
   async validateBoard() {
@@ -122,9 +151,14 @@ export class SudokuLogic {
     );
     this.status = status;
     this.status$.next(this.status);
+    this.sudokuMultiplayer.emitNewStatus({ status: this.status });
   }
 
   initMultiplayer(gameId: string) {
-    this.sudokuMultiplayer.init(gameId, this.board);
+    this.sudokuMultiplayer.init(gameId, {
+      board: this.board,
+      difficulty: this.difficulty,
+      status: this.status,
+    });
   }
 }

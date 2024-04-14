@@ -1,32 +1,43 @@
 import { Socket, io } from 'socket.io-client';
-
+import {
+  UpdateBoardMessage,
+  UpdateBoardStatus,
+  BoardInformation,
+} from '@sudoku-app-game/sudoku-models';
 import { BehaviorSubject } from 'rxjs';
-import { SudokuCell } from '@sudoku-app-game/sudoku-models';
 import { Injectable } from '@angular/core';
-
-export type UpdateBoardMessage = {
-  x: number;
-  y: number;
-  value: number;
-};
 
 @Injectable({ providedIn: 'root' })
 export class SudokuMultiplayer {
   private socket: Socket | null = null;
-  initBoard$ = new BehaviorSubject<SudokuCell[][] | null>(null);
+  multiplayerBoard$ = new BehaviorSubject<BoardInformation | null>(null);
+  newValue$ = new BehaviorSubject<UpdateBoardMessage | null>(null);
+  newStatus$ = new BehaviorSubject<UpdateBoardStatus | null>(null);
 
   constructor() {
     return;
   }
 
-  public init(gameId: string, board: SudokuCell[][]) {
+  public init(gameId: string, board: BoardInformation) {
     this.socket = io('http://localhost:3333', { query: { gameId } });
     this.socket.on('connect', () => {
       this.emitBoardInit(board);
     });
 
-    this.socket.on('init-board', (board: SudokuCell[][]) => {
-      this.initBoard$.next(board);
+    this.socket.on('init-board', (board: BoardInformation) => {
+      this.multiplayerBoard$.next(board);
+    });
+
+    this.socket.on('new-board', (board: BoardInformation) => {
+      this.multiplayerBoard$.next(board);
+    });
+
+    this.socket.on('update-board', (msg: UpdateBoardMessage) => {
+      this.newValue$.next(msg);
+    });
+
+    this.socket.on('update-status', (msg: UpdateBoardStatus) => {
+      this.newStatus$.next(msg);
     });
   }
 
@@ -39,13 +50,18 @@ export class SudokuMultiplayer {
     this.socket.emit('update-board', msg);
   }
 
-  emitBoardInit(board: SudokuCell[][]) {
+  emitBoardInit(board: BoardInformation) {
     if (!this.socket) return;
     this.socket.emit('init-board', board);
   }
 
-  emitNewBoard(board: SudokuCell[][]) {
+  emitNewBoard(board: BoardInformation) {
     if (!this.socket) return;
     this.socket.emit('new-board', board);
+  }
+
+  emitNewStatus(msg: UpdateBoardStatus) {
+    if (!this.socket) return;
+    this.socket.emit('update-status', msg);
   }
 }

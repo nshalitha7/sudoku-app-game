@@ -1,12 +1,17 @@
 import { Server } from 'socket.io';
 import express from 'express';
 import * as path from 'path';
+import {
+  SudokuCell,
+  UpdateBoardStatus,
+  UpdateBoardMessage,
+} from '@sudoku-app-game/sudoku-models';
 
 const app = express();
 
 export type GameRoom = {
   gameId: string;
-  board: number[][];
+  board: SudokuCell[][];
 };
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -38,40 +43,31 @@ io.on('connection', async (socket) => {
   const gameId: string = (socket.request as any)._query['gameId'];
   await socket.join(gameId);
 
-  socket.on('init-board', (msg) => {
+  socket.on('init-board', (board: SudokuCell[][]) => {
     if (rooms[gameId] == null) {
-      console.log('override gameID');
       rooms[gameId] = {
         gameId,
-        board: msg.board,
+        board,
       };
     }
-    io.to(gameId).emit('init-board', { board: rooms[gameId] });
+    io.to(gameId).emit('init-board', rooms[gameId].board);
   });
 
-  socket.on('new-board', (msg) => {
+  socket.on('new-board', (board: SudokuCell[][]) => {
     if (!rooms[gameId]) {
       rooms[gameId] = {
         gameId,
-        board: msg.board,
+        board,
       };
     }
-    io.to(gameId).emit(msg);
+    io.to(gameId).emit('new-board', board);
   });
 
-  socket.on('update-board', (msg) => {
-    console.log(msg);
-    io.to(gameId).emit(msg);
-  });
-  socket.on('update-select', (msg) => {
-    console.log(msg);
+  socket.on('update-board', (msg: UpdateBoardMessage) => {
+    io.to(gameId).emit('update-board', msg);
   });
 
-  socket.on('connect_error', function (err) {
-    console.log('client connect_error: ', err);
-  });
-
-  socket.on('connect_timeout', function (err) {
-    console.log('client connect_timeout: ', err);
+  socket.on('update-status', (msg: UpdateBoardStatus) => {
+    io.to(gameId).emit('update-status', msg);
   });
 });
