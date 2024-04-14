@@ -22,20 +22,6 @@
       </div>
       <div class="game-status">
         <div>
-          Game Status:
-          <lib-sudoku-badge
-            [color]="
-              status === 'unsolved'
-                ? 'default'
-                : status === 'broken'
-                ? 'danger'
-                : 'success'
-            "
-          >
-            {{ status }}
-          </lib-sudoku-badge>
-        </div>
-        <div>
           Difficulty:
           <lib-sudoku-badge>
             {{ difficulty }}
@@ -61,6 +47,22 @@
       }
     </div>
     <div class="bottom">
+      <div class="game-status">
+        <div>
+          Game Status:
+          <lib-sudoku-badge
+            [color]="
+              status === 'unsolved'
+                ? 'default'
+                : status === 'broken'
+                ? 'danger'
+                : 'success'
+            "
+          >
+            {{ status }}
+          </lib-sudoku-badge>
+        </div>
+      </div>
       <div class="btn-group">
         <lib-sudoku-button class="button" (click)="onClickValidate()">
           Validate

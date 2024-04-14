@@ -54,7 +54,7 @@ export class GameBoardSudokuComponent {
 
   onClickValidate() {
     console.log('OnClickValide');
-    this.sudokuLogic.validateBoard();
+    if (this.status !== 'unsolvable') this.sudokuLogic.validateBoard();
   }
 
   onCickSolve() {
@@ -112,7 +112,7 @@ export class GameBoardSudokuComponent {
       );
       this.selectedCell.element.classList.add('selected');
     }
-    if (key === '0') {
+    if (key === '0' || this.status == 'unsolvable') {
       this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].value = 0;
       this.sudokuLogic.setValue(
         this.selectedCell.colIdx,

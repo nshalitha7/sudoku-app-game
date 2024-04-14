@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export enum CellType {
   INPUT,
@@ -9,12 +9,20 @@ export enum CellType {
 export type SudokuCell = {
   value: number;
   type: CellType;
-}
+};
 
-export const GameDifficultySchema = z.enum(["easy", "medium", "hard", "random"]);
+export const GameDifficultySchema = z.enum([
+  'easy',
+  'medium',
+  'hard',
+  'random',
+]);
 export type GameDifficulty = z.infer<typeof GameDifficultySchema>;
 
-export const GameStatusSchema = z.enum(["solved", "unsolved", "broken"]);
+export const GameStatusSchema = z.enum([
+  'solved',
+  'unsolved',
+  'broken',
+  'unsolvable',
+]);
 export type GameStatus = z.infer<typeof GameStatusSchema>;
-
-
