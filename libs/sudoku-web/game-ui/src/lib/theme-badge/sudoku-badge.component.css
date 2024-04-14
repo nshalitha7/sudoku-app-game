@@ -1,0 +1,19 @@
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.default {
+  background-color: #6c757d;
+  color: white;
+}
+
+.success {
+  background-color: rgb(32, 206, 44);
+  color: white;
+}
+
+.danger {
+  background-color: rgb(243, 74, 74);
+  color: white;
+}
