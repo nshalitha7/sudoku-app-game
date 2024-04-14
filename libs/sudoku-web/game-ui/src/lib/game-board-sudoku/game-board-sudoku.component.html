@@ -92,9 +92,16 @@
 
     <div class="login">
       <label>Multiplayer Mode</label>
-      <input class="input" [(ngModel)]="gameId" placeholder="gameId" />
+      <input
+        class="input"
+        [(ngModel)]="gameId"
+        placeholder="gameId"
+        [disabled]="multiplayerEnable"
+      />
       <div>
-        <lib-sudoku-button (click)="onClickLogin()">Connect</lib-sudoku-button>
+        <lib-sudoku-button (click)="onClickLogin()">{{
+          multiplayerEnable ? 'Disconnect' : 'Connect'
+        }}</lib-sudoku-button>
       </div>
     </div>
   </div>

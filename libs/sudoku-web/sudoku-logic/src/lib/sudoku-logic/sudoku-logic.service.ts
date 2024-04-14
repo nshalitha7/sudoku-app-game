@@ -161,4 +161,8 @@ export class SudokuLogic {
       status: this.status,
     });
   }
+
+  disconnectMultiplayer() {
+    this.sudokuMultiplayer.disconnect();
+  }
 }

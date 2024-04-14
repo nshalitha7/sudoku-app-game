@@ -64,4 +64,9 @@ export class SudokuMultiplayer {
     if (!this.socket) return;
     this.socket.emit('update-status', msg);
   }
+
+  disconnect() {
+    this.socket?.disconnect();
+    this.socket = null;
+  }
 }

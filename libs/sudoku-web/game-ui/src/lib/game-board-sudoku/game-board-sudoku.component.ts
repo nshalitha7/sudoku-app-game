@@ -32,6 +32,7 @@ export class GameBoardSudokuComponent {
   status: GameStatus;
   difficulty: GameDifficulty;
   isLoading: boolean;
+  multiplayerEnable: boolean;
   gameId: string;
   possibleKey = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
@@ -48,6 +49,7 @@ export class GameBoardSudokuComponent {
     this.status = 'unsolved';
     this.difficulty = 'random';
     this.isLoading = false;
+    this.multiplayerEnable = false;
     this.gameId = '';
   }
 
@@ -140,6 +142,12 @@ export class GameBoardSudokuComponent {
   }
 
   onClickLogin() {
-    this.sudokuLogic.initMultiplayer(this.gameId);
+    if (this.multiplayerEnable) {
+      this.sudokuLogic.disconnectMultiplayer();
+      this.multiplayerEnable = false;
+    } else {
+      this.sudokuLogic.initMultiplayer(this.gameId);
+      this.multiplayerEnable = true;
+    }
   }
 }
