@@ -1,0 +1,31 @@
+{
+  "name": "sudoku-multiplayer-backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/sudoku-multiplayer-backend/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "sudoku-multiplayer-backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "sudoku-multiplayer-backend:build:development"
+        },
+        "production": {
+          "buildTarget": "sudoku-multiplayer-backend:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/sudoku-multiplayer-backend/jest.config.ts"
+      }
+    }
+  }
+}
