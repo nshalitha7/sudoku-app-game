@@ -90,7 +90,7 @@ export class GameBoardSudokuComponent {
     return;
   }
 
-  @HostListener('document:keypress', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     this.setNewValueToSelectedCell(event.key);
   }
@@ -112,7 +112,12 @@ export class GameBoardSudokuComponent {
       );
       this.selectedCell.element.classList.add('selected');
     }
-    if (key === '0' || this.status == 'unsolvable') {
+    if (
+      key === '0' ||
+      key === 'Delete' ||
+      key === 'Backspace' ||
+      this.status == 'unsolvable'
+    ) {
       this.board[this.selectedCell.colIdx][this.selectedCell.rowIdx].value = 0;
       this.sudokuLogic.setValue(
         this.selectedCell.colIdx,
