@@ -57,7 +57,7 @@ export class GameBoardSudokuComponent {
     if (this.status !== 'unsolvable') this.sudokuLogic.validateBoard();
   }
 
-  onCickSolve() {
+  onClickSolve() {
     this.sudokuLogic.solveBoard();
   }
 

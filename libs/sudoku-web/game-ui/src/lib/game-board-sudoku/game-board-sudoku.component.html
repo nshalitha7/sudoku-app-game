@@ -30,21 +30,25 @@
       </div>
     </div>
     <div class="board-cells">
-      @for (col of board; track colIdx; let colIdx = $index) {
-      <div class="board-line">
-        @for (row of col; track rowIdx; let rowIdx = $index) {
+      <div
+        class="board-line"
+        *ngFor="let col of board; let colIdx = index"
+        role="row"
+      >
         <div
-          class="border-sm square"
+          class="square border-sm"
+          *ngFor="let row of col; let rowIdx = index"
           [ngClass]="['col' + colIdx, 'row' + rowIdx]"
+          role="gridcell"
           [class.by-user]="!row.hasDefaultValue"
+          [attr.aria-label]="'Row ' + (rowIdx + 1) + ', Column ' + (colIdx + 1)"
         >
+          <!--          <span *ngIf="row.value !== 0">{{ row.value }}</span>-->
           @if (row.value !== 0) {
           {{ row.value }}
           }
         </div>
-        }
       </div>
-      }
     </div>
     <div class="bottom">
       <div class="game-status">
@@ -67,7 +71,7 @@
         <lib-sudoku-button class="button" (click)="onClickValidate()">
           Validate
         </lib-sudoku-button>
-        <lib-sudoku-button class="button" (click)="onCickSolve()">
+        <lib-sudoku-button class="button" (click)="onClickSolve()">
           Solve
         </lib-sudoku-button>
       </div>
