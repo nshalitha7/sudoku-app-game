@@ -7,3 +7,10 @@ services:
     ports:
       - '4201:4201'
     container_name: sudoku
+  sudoku-multiplayer-backend:
+    build:
+      context: .
+      dockerfile: ./apps/sudoku-multiplayer-backend/Dockerfile
+    ports:
+      - '3333:3333'
+    container_name: sudoku-multiplayer-backend

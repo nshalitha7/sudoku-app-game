@@ -20,6 +20,10 @@
         }
       }
     },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f apps/sudoku-coop-backend/Dockerfile . -t sudoku-coop-backend"
+    },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
