@@ -1,0 +1,9 @@
+version: '3'
+services:
+  sudoku:
+    build:
+      context: .
+      dockerfile: ./apps/sudoku-app-game/Dockerfile
+    ports:
+      - '4201:4201'
+    container_name: sudoku
