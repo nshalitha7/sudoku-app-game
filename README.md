@@ -1,10 +1,14 @@
 # Sudoku Game Application
 
-This application allow users to solve Sudoku puzzles and engage in multiplayer puzzle-solving mode, respectively. The project can be deployed using Docker Compose.
+This application allow users to solve Sudoku puzzles and engage in multiplayer puzzle-solving mode, respectively. The project can be deployed using Docker Compose. This repository contains 2 applications `sudoku-app-game` and `sudoku-multiplayer-backend`.
 
 ## Start the application
 
 Run `npx nx serve sudoku-app-game` to start the frontend development server. Run `npx nx serve sudoku-multiplayer-backend` to start the backend development server(multiplayer).Happy coding!
+
+## Generate Test Report
+
+Run `nx run-many --all --target=test --codeCoverage` to generate the test coverage report.
 
 ## Docker Compose
 
