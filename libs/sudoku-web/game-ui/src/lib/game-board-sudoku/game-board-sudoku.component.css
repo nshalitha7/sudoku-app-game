@@ -17,7 +17,6 @@
 }
 
 .bottom {
-  padding-top: 2rem;
   display: flex;
   flex-direction: column;
 }
@@ -120,8 +119,6 @@
 .login {
   display: flex;
   flex-direction: column;
-
-  padding-top: 2rem;
 }
 
 .login .multiplayer-group {
