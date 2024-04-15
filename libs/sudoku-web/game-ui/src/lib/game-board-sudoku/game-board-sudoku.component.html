@@ -3,7 +3,7 @@
     <div class="board-line top">
       <h1 class="title">Sudoku Game</h1>
       <div>
-        <div class="sub-title">-Select Difficulty to Generate Board-</div>
+        <div class="sub-title">-Select Difficulty to Start New Game-</div>
         <br />
         <div class="btn-group">
           <lib-sudoku-button
@@ -43,7 +43,7 @@
     </div>
     <div class="login">
       <label
-        >Multiplayer Mode(Optional, or you can play in single-player
+        >Multiplayer Mode (Optional, or you can play in single-player
         mode)</label
       >
       <br />
@@ -107,10 +107,20 @@
         </div>
       </div>
       <div class="btn-group">
-        <lib-sudoku-button (click)="onClickValidate()" [disabled]="isLoading">
+        <lib-sudoku-button
+          (click)="onClickValidate()"
+          [disabled]="
+            isLoading || status === 'solved' || status === 'unsolvable'
+          "
+        >
           Validate
         </lib-sudoku-button>
-        <lib-sudoku-button (click)="onClickSolve()" [disabled]="isLoading">
+        <lib-sudoku-button
+          (click)="onClickSolve()"
+          [disabled]="
+            isLoading || status === 'solved' || status === 'unsolvable'
+          "
+        >
           Solve
         </lib-sudoku-button>
       </div>
