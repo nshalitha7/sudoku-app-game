@@ -6,10 +6,13 @@ import {
 } from '@sudoku-app-game/sudoku-models';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SudokuMultiplayer {
   private socket: Socket | null = null;
+  private host = environment.host;
+  private port = environment.port;
   multiplayerBoard$ = new BehaviorSubject<BoardInformation | null>(null);
   newValue$ = new BehaviorSubject<UpdateBoardMessage | null>(null);
   newStatus$ = new BehaviorSubject<UpdateBoardStatus | null>(null);
@@ -19,7 +22,12 @@ export class SudokuMultiplayer {
   }
 
   public init(gameId: string, board: BoardInformation) {
-    this.socket = io('http://localhost:3333', { query: { gameId } });
+    this.socket = io(
+      environment.production
+        ? `https://${this.host}`
+        : `http://${this.host}:${this.port}`,
+      { query: { gameId } }
+    );
     this.socket.on('connect', () => {
       this.emitBoardInit(board);
     });
