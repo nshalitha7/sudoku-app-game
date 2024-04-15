@@ -90,13 +90,19 @@
       </div>
     </div>
     <div class="bottom-keys">
-      <div *ngFor="let num of [].constructor(10).fill(0).keys()">
+      <lib-sudoku-button
+        (click)="setNewValueToSelectedCell('0')"
+        class="button"
+        [disabled]="isLoading"
+        >0</lib-sudoku-button
+      >
+      <div *ngFor="let key of possibleKey; let i = index">
         <lib-sudoku-button
-          (click)="setNewValueToSelectedCell(num)"
+          (click)="setNewValueToSelectedCell(key)"
           class="button"
           [disabled]="isLoading"
         >
-          {{ num }}
+          {{ key }}
         </lib-sudoku-button>
       </div>
     </div>
