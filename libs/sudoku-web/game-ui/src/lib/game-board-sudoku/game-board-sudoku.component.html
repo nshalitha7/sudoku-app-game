@@ -89,6 +89,17 @@
         </div>
       </div>
     </div>
+    <div class="bottom-keys">
+      <div *ngFor="let key of possibleKey; let i = index">
+        <lib-sudoku-button
+          (click)="setNewValueToSelectedCell(key)"
+          class="button"
+          [disabled]="isLoading"
+        >
+          {{ key }}
+        </lib-sudoku-button>
+      </div>
+    </div>
     <div class="bottom">
       <div class="game-status">
         <div>

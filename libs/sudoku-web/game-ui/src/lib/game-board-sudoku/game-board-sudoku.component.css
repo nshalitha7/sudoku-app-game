@@ -121,6 +121,15 @@
   flex-direction: column;
 }
 
+.bottom-keys {
+  padding-top: 1rem;
+  display: flex;
+  max-width: min(100%, 600px);
+  gap: 0.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 .login .multiplayer-group {
   display: flex;
   flex-direction: row;
