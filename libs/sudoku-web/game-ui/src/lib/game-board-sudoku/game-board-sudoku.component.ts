@@ -36,6 +36,8 @@ export class GameBoardSudokuComponent {
   gameId: string;
   possibleKey = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
+  alphanumericPattern = /^[a-zA-Z0-9]*$/; // Regex pattern for alphanumeric validation
+
   constructor(private sudokuLogic: SudokuLogic) {
     this.sudokuLogic.board$.subscribe((board) => {
       this.board = board;
@@ -150,5 +152,11 @@ export class GameBoardSudokuComponent {
       this.sudokuLogic.initMultiplayer(this.gameId);
       this.multiplayerEnable = true;
     }
+  }
+
+  validateGameId(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    inputElement.value = inputElement.value.replace(/[^a-zA-Z0-9]/g, '');
+    this.gameId = inputElement.value;
   }
 }
