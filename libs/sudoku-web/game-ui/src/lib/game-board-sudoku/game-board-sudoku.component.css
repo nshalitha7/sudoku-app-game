@@ -122,7 +122,7 @@
 }
 
 .bottom-keys {
-  padding-top: 1rem;
+  padding-top: 4rem;
   display: flex;
   max-width: min(100%, 600px);
   gap: 0.5rem;
