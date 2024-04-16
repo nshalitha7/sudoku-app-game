@@ -4,12 +4,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npx nx build sudoku-angular
+RUN npx nx build sudoku-app-game
 
 # run stage
 FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist/apps/sudoku-angular/browser /usr/share/nginx/html
-COPY --from=build-stage /app/apps/sudoku-angular/nginx.conf /etc/nginx/
+COPY --from=build-stage /app/dist/apps/sudoku-app-game/browser /usr/share/nginx/html
+COPY --from=build-stage /app/apps/sudoku-app-game/nginx.conf /etc/nginx/
 
 EXPOSE 4201
 CMD ["nginx", "-g", "daemon off;"]
